@@ -1,18 +1,17 @@
 package com.pawelcz.investments.calculationAlgorithm
 
 import com.pawelcz.investments.investment.Investment
+import java.math.BigDecimal
 import java.time.temporal.ChronoUnit
 
 class AtTheEndOfTheInvestmentPeriodAlgorithm : Algorithm("AtTheEndOfTheInvestmentPeriodAlgorithm") {
-    override fun calculation(investment: Investment) : Double {
-        var interest = 1.0
+    override fun calculation(investment: Investment) : BigDecimal {
         val interestRate = investment.getInterestRate()
-        var periodInDays = ChronoUnit.DAYS.between(investment.getStartDate(),investment.getEndDate())
-        val capitalizationPeriod = investment.getCapitalizationPeriod().toDays
-        while (periodInDays - capitalizationPeriod >= 0){
-            interest *= interestRate
-            periodInDays -= capitalizationPeriod
+        var periodInDays = ChronoUnit.DAYS.between(investment.getStartDate(),investment.getEndDate()).toInt()
+        val capitalizationPeriod = investment.getCapitalizationPeriod().inDays
+        when(val numberOfCapitalizations = periodInDays / capitalizationPeriod){
+            0 -> return BigDecimal("1.0")
+            else -> return interestRate.pow(numberOfCapitalizations)
         }
-        return interest
     }
 }
