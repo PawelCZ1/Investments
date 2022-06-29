@@ -30,7 +30,7 @@ class Calculation(
     fun getAlgorithmType() = algorithmType
     fun getProfit() = profit
 
-    fun calculateProfit(){
+    private fun calculateProfit(){
         val algorithmFactory = AlgorithmFactory()
         val algorithm = algorithmFactory.makeAlgorithm(algorithmType)
         profit = (amount.multiply(algorithm.calculation(investment))).subtract(amount)

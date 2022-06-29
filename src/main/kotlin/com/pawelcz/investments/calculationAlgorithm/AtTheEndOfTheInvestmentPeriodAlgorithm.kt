@@ -9,9 +9,9 @@ class AtTheEndOfTheInvestmentPeriodAlgorithm : Algorithm("AtTheEndOfTheInvestmen
         val interestRate = investment.getInterestRate()
         var periodInDays = ChronoUnit.DAYS.between(investment.getStartDate(),investment.getEndDate()).toInt()
         val capitalizationPeriod = investment.getCapitalizationPeriod().inDays
-        when(val numberOfCapitalizations = periodInDays / capitalizationPeriod){
-            0 -> return BigDecimal("1.0")
-            else -> return interestRate.pow(numberOfCapitalizations)
+        return when(val numberOfCapitalizations = periodInDays / capitalizationPeriod){
+            0 -> BigDecimal("1.0")
+            else -> interestRate.pow(numberOfCapitalizations)
         }
     }
 }
