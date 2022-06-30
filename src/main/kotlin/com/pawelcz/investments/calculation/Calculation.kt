@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne
 @Entity
 class Calculation(
     private var amount : BigDecimal,
-    private var calculationDate : LocalDate = LocalDate.now(),
     @ManyToOne
     @JoinColumn(name = "investmentId", nullable = false)
     private var investment: Investment,
@@ -20,6 +19,7 @@ class Calculation(
 ) : AbstractJpaPersistable<Long>()  {
 
     private lateinit var profit : BigDecimal
+    private var calculationDate : LocalDate = LocalDate.now()
     init{
         calculateProfit()
     }
