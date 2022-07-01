@@ -2,15 +2,16 @@ package com.pawelcz.investments.investment
 
 import java.util.*
 
+
 interface InvestmentService {
 
-    fun availableInvestments() : List<Investment>
+    fun availableInvestments() : Collection<Any>
 
-    fun allInvestments() : List<Investment>
+    fun allInvestments() : Collection<Any>
 
     fun addInvestment(investment: Investment) : Investment
 
     fun getInvestmentWithId(id : Long) : Optional<Investment>
 
-
+    fun getInvestmentById(id : Long) : Any
 }

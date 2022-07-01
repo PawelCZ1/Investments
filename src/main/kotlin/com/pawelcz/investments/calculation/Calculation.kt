@@ -38,5 +38,15 @@ class Calculation(
         profit = (amount.multiply(algorithm.calculation(investment))).subtract(amount)
     }
 
+    override fun toString(): String {
+        return "{" +
+                "amount=$amount" +
+                ", investmentId=${investment.getId()}" +
+                ", algorithmType=$algorithmType" +
+                ", profit=$profit" +
+                ", calculationDate=$calculationDate" +
+                "}"
+    }
+
 
 }

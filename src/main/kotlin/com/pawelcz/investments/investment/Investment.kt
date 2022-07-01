@@ -4,14 +4,14 @@ import com.pawelcz.investments.AbstractJpaPersistable
 import com.pawelcz.investments.calculation.Calculation
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.OneToMany
+import java.time.temporal.ChronoUnit
+import javax.persistence.*
 
 @Entity
 class Investment(
     private var name: String,
     private var interestRate: BigDecimal,
+    @Enumerated(EnumType.STRING)
     private var capitalizationPeriod: CapitalizationPeriodInMonths,
     private var startDate: LocalDate,
     private var endDate: LocalDate
@@ -19,15 +19,33 @@ class Investment(
 
     @OneToMany(mappedBy = "investment", fetch = FetchType.LAZY)
     private lateinit var calculations : List<Calculation>
+    @Transient
+    private val periodInDays = ChronoUnit.DAYS.between(startDate, endDate).toInt()
     fun getName() = name
     fun getInterestRate() = interestRate
-    fun getCapitalizationPeriod() = capitalizationPeriod
-    fun getStartDate() = startDate
-    fun getEndDate() = endDate
 
-    fun isAvailable() = endDate >= LocalDate.now()
+    fun CapitalizationPeriod() = capitalizationPeriod
+    fun StartDate() = startDate
+    fun EndDate() = endDate
+
+    fun getPeriodInDays() = periodInDays
+
+    fun Available() = endDate >= LocalDate.now()
+
+
+
+
 
     fun calculationList() = calculations
+    override fun toString(): String {
+        return "{" +
+                "id='${getId()}'" +
+                ", name='$name'" +
+                ", interestRate=$interestRate" +
+                ", periodInDays=$periodInDays" +
+                "}"
+
+    }
 
 
 }
