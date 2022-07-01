@@ -7,10 +7,10 @@ import java.util.*
 @Service
 class InvestmentServiceImpl(private val investmentRepository: InvestmentRepository) : InvestmentService {
 
-    override fun availableInvestments(): List<Investment> = allInvestments().filter { element -> element.isActual() }
+    override fun availableInvestments(): List<Investment> = investmentRepository.availableInvestments()
 
 
-    override fun allInvestments(): List<Investment> = investmentRepository.findAll()
+    override fun allInvestments(): List<Investment> = investmentRepository.allInvestments()
 
 
     override fun addInvestment(investment: Investment): Investment = investmentRepository.save(investment)

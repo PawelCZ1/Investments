@@ -1,9 +1,7 @@
 package com.pawelcz.investments.calculation
 
-import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 import java.util.*
 
 @Service
@@ -22,12 +20,14 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
 
     override fun addCalculation(calculation: Calculation) = calculationRepository.save(calculation)
 
-    override fun addCalculation(investmentId: Long, amount: BigDecimal, algorithmType: Char): Calculation {
+    override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Calculation {
         val optionalInvestment = investmentService.getInvestmentWithId(investmentId)
         if(optionalInvestment.isEmpty)
             throw RuntimeException("Investment with the specified ID does not exist")
         val investment = optionalInvestment.get()
-        when(investment.isActual()){
+        val amount = calculationParameters.getAmount()
+        val algorithmType = calculationParameters.getAlgorithmType()
+        when(investment.isAvailable()){
             true -> {
                 val calculation = Calculation(amount, investment, algorithmType)
                 addCalculation(calculation)

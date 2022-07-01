@@ -25,7 +25,7 @@ class Investment(
     fun getStartDate() = startDate
     fun getEndDate() = endDate
 
-    fun isActual() = endDate >= LocalDate.now()
+    fun isAvailable() = endDate >= LocalDate.now()
 
     fun calculationList() = calculations
 
