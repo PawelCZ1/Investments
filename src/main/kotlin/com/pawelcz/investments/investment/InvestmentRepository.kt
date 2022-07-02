@@ -14,4 +14,7 @@ interface InvestmentRepository : JpaRepository<Investment, Long> {
     @Query("SELECT id, name, interestRate, capitalizationPeriod, startDate, endDate FROM Investment WHERE id = ?1")
     fun getInvestmentById(id : Long) : Any
 
+    @Query("SELECT id, name, interest_rate, (end_date - start_date) as days FROM Investment WHERE id = ?1", nativeQuery = true)
+    fun getInvestment(id: Long) : Any
+
 }

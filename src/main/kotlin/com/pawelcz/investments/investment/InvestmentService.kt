@@ -9,9 +9,11 @@ interface InvestmentService {
 
     fun allInvestments() : Collection<Any>
 
-    fun addInvestment(investment: Investment) : Investment
+    fun addInvestment(investment: Investment) : Any
 
     fun getInvestmentWithId(id : Long) : Optional<Investment>
 
     fun getInvestmentById(id : Long) : Any
+
+    fun getInvestment(id: Long) : Any
 }

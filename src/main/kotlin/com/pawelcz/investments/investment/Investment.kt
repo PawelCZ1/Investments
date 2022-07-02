@@ -1,5 +1,6 @@
 package com.pawelcz.investments.investment
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.pawelcz.investments.AbstractJpaPersistable
 import com.pawelcz.investments.calculation.Calculation
 import java.math.BigDecimal
@@ -13,7 +14,9 @@ class Investment(
     private var interestRate: BigDecimal,
     @Enumerated(EnumType.STRING)
     private var capitalizationPeriod: CapitalizationPeriodInMonths,
+    @JsonFormat(pattern="yyyy-MM-dd")
     private var startDate: LocalDate,
+    @JsonFormat(pattern="yyyy-MM-dd")
     private var endDate: LocalDate
 ) : AbstractJpaPersistable<Long>() {
 

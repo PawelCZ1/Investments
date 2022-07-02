@@ -14,12 +14,19 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
     override fun allInvestments(): Collection<Any> = investmentRepository.allInvestments()
 
 
-    override fun addInvestment(investment: Investment): Investment = investmentRepository.save(investment)
+    override fun addInvestment(investment: Investment): Any{
+        investmentRepository.save(investment)
+        return investment.getId()?.let { getInvestment(it) }!!
+    }
 
 
     override fun getInvestmentWithId(id: Long): Optional<Investment> = investmentRepository.findById(id)
 
     override fun getInvestmentById(id: Long) = investmentRepository.getInvestmentById(id)
+
+    override fun getInvestment(id: Long) = investmentRepository.getInvestment(id)
+
+
 
 
 
