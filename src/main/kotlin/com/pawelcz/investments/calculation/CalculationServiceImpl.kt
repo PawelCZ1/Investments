@@ -9,13 +9,6 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
                              private val investmentService: InvestmentService
 ) : CalculationService {
 
-    override fun allCalculations(): List<Calculation> = calculationRepository.findAll()
-
-    override fun calculationList(): List<Calculation> = calculationRepository.calculationList()
-
-    override fun calculationListWithTheParticularId(investmentId: Long) = calculationList()
-        .filter { element -> element.getInvestment().getId() == investmentId }
-
     override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<Any, Collection<Any>>{
         val investment = investmentService.getInvestmentWithId(investmentId)
         if(investment.isEmpty)
@@ -45,7 +38,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
         }
     }
 
-    override fun getCalculation(calculationId: Long): Optional<Calculation> = calculationRepository.findById(calculationId)
+
 
     override fun getCalculationById(id: Long) = calculationRepository.getCalculationById(id)
 
