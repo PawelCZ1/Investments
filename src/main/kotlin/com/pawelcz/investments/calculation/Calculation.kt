@@ -4,7 +4,9 @@ import com.pawelcz.investments.AbstractJpaPersistable
 import com.pawelcz.investments.calculationAlgorithm.AlgorithmFactory
 import com.pawelcz.investments.investment.Investment
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -15,14 +17,23 @@ class Calculation(
     @ManyToOne
     @JoinColumn(name = "investmentId", nullable = false)
     private var investment: Investment,
-    private var algorithmType: Char
+    private var algorithmType: Char,
+    private var profit : BigDecimal
 ) : AbstractJpaPersistable<Long>()  {
 
-    private lateinit var profit : BigDecimal
-    private var calculationDate : LocalDate = LocalDate.now()
-    init{
-        calculateProfit()
+    companion object{
+        fun calculateProfit(amount : BigDecimal, investment: Investment, algorithmType: Char) : BigDecimal {
+            val algorithmFactory = AlgorithmFactory()
+            val algorithm = algorithmFactory.makeAlgorithm(algorithmType)
+            val profit = (amount.multiply(algorithm.calculation(investment))).subtract(amount)
+            return profit.setScale(2, RoundingMode.CEILING)
+        }
+
     }
+
+
+    private var calculationDate : LocalDate = LocalDate.now()
+
 
     fun getAmount() = amount
     fun getCalculationDate() = calculationDate
@@ -32,11 +43,9 @@ class Calculation(
 
 
 
-    private fun calculateProfit(){
-        val algorithmFactory = AlgorithmFactory()
-        val algorithm = algorithmFactory.makeAlgorithm(algorithmType)
-        profit = (amount.multiply(algorithm.calculation(investment))).subtract(amount)
-    }
+
+
+
 
     override fun toString(): String {
         return "{" +

@@ -22,8 +22,9 @@ class Investment(
 
     @OneToMany(mappedBy = "investment", fetch = FetchType.LAZY)
     private lateinit var calculations : List<Calculation>
+
     @Transient
-    private val periodInDays = ChronoUnit.DAYS.between(startDate, endDate).toInt()
+    private val periodInDays : Int = 0
     fun getName() = name
     fun getInterestRate() = interestRate
 
@@ -31,7 +32,7 @@ class Investment(
     fun StartDate() = startDate
     fun EndDate() = endDate
 
-    fun getPeriodInDays() = periodInDays
+    fun getPeriodInDays() = ChronoUnit.DAYS.between(startDate, endDate).toInt()
 
     fun Available() = endDate >= LocalDate.now()
 

@@ -12,6 +12,8 @@ interface CalculationService {
     fun calculationListWithTheParticularId(investmentId : Long) : List<Calculation>
     fun historicalCalculationsOfTheParticularInvestment(investmentId : Long) : Pair<Any, List<Calculation>>
     fun addCalculation(calculation: Calculation) : Calculation
-    fun addCalculation(investmentId : Long, calculationParameters: CalculationParameters) : Calculation
+    fun addCalculation(investmentId : Long, calculationParameters: CalculationParameters) : Any
     fun getCalculation(calculationId : Long) : Optional<Calculation>
+
+    fun getCalculationById(id : Long) : Any
 }

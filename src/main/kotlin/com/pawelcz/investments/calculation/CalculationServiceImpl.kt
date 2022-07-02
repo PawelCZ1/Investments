@@ -1,6 +1,5 @@
 package com.pawelcz.investments.calculation
 
-import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
 import java.util.*
@@ -27,24 +26,30 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
 
     override fun addCalculation(calculation: Calculation) = calculationRepository.save(calculation)
 
-    override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Calculation {
-        val optionalInvestment = investmentService.getInvestmentWithId(investmentId)
-        if(optionalInvestment.isEmpty)
+    override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Any {
+        val investment = investmentService.getInvestmentWithId(investmentId)
+        if(investment.isEmpty)
             throw RuntimeException("Investment with the specified ID does not exist")
-        val investment = optionalInvestment.get()
+
         val amount = calculationParameters.getAmount()
         val algorithmType = calculationParameters.getAlgorithmType()
-        when(investment.Available()){
+
+        when(investment.get().Available()){
             true -> {
-                val calculation = Calculation(amount, investment, algorithmType)
+                val calculation = Calculation(amount, investment.get(), algorithmType, Calculation.calculateProfit
+                    (amount, investment.get(), algorithmType))
                 addCalculation(calculation)
-                return calculation
+                return getCalculationById(calculation.getId()!!)
             }
             false -> throw RuntimeException("Investment with the specified ID is no longer available")
         }
     }
 
     override fun getCalculation(calculationId: Long): Optional<Calculation> = calculationRepository.findById(calculationId)
+
+    override fun getCalculationById(id: Long) = calculationRepository.getCalculationById(id)
+
+
 
 
 }
