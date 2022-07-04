@@ -25,8 +25,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
         val algorithmType = calculationParameters.getAlgorithmType()
         when(investment.Available()){
             true -> {
-                val calculation = Calculation(amount, investment, algorithmType, Calculation.calculateProfit
-                    (amount, investment, algorithmType))
+                val calculation = Calculation(amount, investment, algorithmType)
                 addCalculation(calculation)
                 return getCalculationById(calculation.getId()!!)
             }
@@ -39,7 +38,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
     override fun getCalculationById(id: Long) = calculationRepository.getCalculationById(id)
 
     override fun calculationListForTheParticularInvestment(id: Long)
-    = calculationRepository.calculationListForTheParticularInvestment(id).toList()
+    = calculationRepository.calculationListForTheParticularInvestment(id)
 
 
 

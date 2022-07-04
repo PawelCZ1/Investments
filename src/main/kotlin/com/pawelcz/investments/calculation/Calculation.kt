@@ -18,9 +18,9 @@ class Calculation(
     private var investment: Investment,
     @JoinColumn(name = "algorithm_type", nullable = false)
     private var algorithmType: Char,
-    @JoinColumn(name = "profit", nullable = false)
-    private var profit : BigDecimal
+
 ) : AbstractJpaPersistable<Long>()  {
+
 
     companion object{
         fun calculateProfit(amount : BigDecimal, investment: Investment, algorithmType: Char) : BigDecimal {
@@ -31,6 +31,8 @@ class Calculation(
         }
 
     }
+    @JoinColumn(name = "profit", nullable = false)
+    private var profit = calculateProfit(amount, investment, algorithmType)
 
     @JoinColumn(name = "calculation_date", nullable = false)
     private var calculationDate : LocalDate = LocalDate.now()
