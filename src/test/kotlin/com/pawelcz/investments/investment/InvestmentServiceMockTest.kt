@@ -11,7 +11,7 @@ internal class InvestmentServiceMockTest{
     private val underTest : InvestmentService = InvestmentServiceImpl(investmentRepository)
 
     @Test
-    fun canGetAllInvestments(){
+    fun allInvestmentsTest(){
         // when
         val investments = underTest.allInvestments()
         // then
@@ -19,7 +19,7 @@ internal class InvestmentServiceMockTest{
     }
 
     @Test
-    fun canGetAvailableInvestments(){
+    fun availableInvestmentsTest(){
         // when
         val investments = underTest.availableInvestments()
         // then
@@ -29,5 +29,11 @@ internal class InvestmentServiceMockTest{
 
 
     @Test
-    fun canGetInvestmentWithId(){}
+    fun selectEverythingFromInvestmentTest(){
+        // when
+        val investments = underTest.selectEverythingFromInvestment(1)
+        // then
+        verify(exactly = 1) { investmentRepository.selectEverythingFromInvestment(1) }
+
+    }
 }

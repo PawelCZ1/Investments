@@ -1,11 +1,16 @@
 package com.pawelcz.investments.investment
 
+import io.mockk.InternalPlatformDsl.toArray
+import io.mockk.InternalPlatformDsl.toStr
+import io.mockk.boxedClass
+import io.mockk.boxedValue
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
+import java.sql.Date
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -41,8 +46,10 @@ internal class InvestmentRepositoryTest(
         assertThat(result.size).isEqualTo(expected)
         assertThat(result[0]).isNotNull
         assertThat(result[1]).isNotNull
-        assertThat(result[0]).isInstanceOf(firstObject.javaClass)
-        assertThat(result[0]).isInstanceOf(secondObject.javaClass)
+        assertThat(result[0].toStr()).isEqualTo(firstObject.contentToString())
+        assertThat(result[1].toStr()).isEqualTo(secondObject.contentToString())
+        assertThat(result[0]).isExactlyInstanceOf(firstObject.javaClass)
+        assertThat(result[0]).isExactlyInstanceOf(secondObject.javaClass)
     }
 
     @Test
@@ -61,7 +68,8 @@ internal class InvestmentRepositoryTest(
         // then
         assertThat(result.size).isEqualTo(expected)
         assertThat(result[0]).isNotNull
-        assertThat(result[0]).isInstanceOf(firstObject.javaClass)
+        assertThat(result[0].toStr()).isEqualTo(firstObject.contentToString())
+        assertThat(result[0]).isExactlyInstanceOf(firstObject.javaClass)
     }
 
     @Test
@@ -76,7 +84,8 @@ internal class InvestmentRepositoryTest(
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15"))
         // then
         assertThat(result).isNotNull
-        assertThat(result).isInstanceOf(testObject.javaClass)
+        assertThat(result.toArray().contentToString()).isEqualTo(testObject.contentToString())
+        assertThat(result).isExactlyInstanceOf(testObject.javaClass)
     }
 
     @Test
@@ -91,7 +100,8 @@ internal class InvestmentRepositoryTest(
             ChronoUnit.DAYS.between(LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15")))
         // then
         assertThat(result).isNotNull
-        assertThat(result).isInstanceOf(testObject.javaClass)
+        assertThat(result.toArray().contentToString()).isEqualTo(testObject.contentToString())
+        assertThat(result).isExactlyInstanceOf(testObject.javaClass)
 
     }
 }
