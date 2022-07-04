@@ -6,16 +6,16 @@ import org.springframework.stereotype.Repository
 
 
 interface InvestmentRepository : JpaRepository<Investment, Long> {
-    @Query("SELECT id, name FROM Investment")
+    @Query("SELECT id, name FROM investment", nativeQuery = true)
     fun allInvestments() : Collection<Any>
 
-    @Query("SELECT id, name FROM Investment WHERE endDate >= current_date")
+    @Query("SELECT id, name FROM investment WHERE end_date >= CURRENT_DATE", nativeQuery = true)
     fun availableInvestments() : Collection<Any>
 
-    @Query("SELECT id, name, interestRate, capitalizationPeriod, startDate, endDate FROM Investment WHERE id = ?1")
+    @Query("SELECT id, name , interest_rate, capitalization_period, start_date, end_date FROM investment WHERE id = ?1", nativeQuery = true)
     fun getInvestmentById(id : Long) : Any
 
-    @Query("SELECT id, name, interest_rate, (end_date - start_date) as days FROM Investment WHERE id = ?1", nativeQuery = true)
+    @Query("SELECT id, name, interest_rate, (end_date - start_date) as days FROM investment WHERE id = ?1", nativeQuery = true)
     fun getInvestment(id: Long) : Any
 
 }

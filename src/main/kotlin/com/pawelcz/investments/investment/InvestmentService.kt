@@ -5,9 +5,9 @@ import java.util.*
 
 interface InvestmentService {
 
-    fun availableInvestments() : Collection<Any>
+    fun availableInvestments() : List<Any>
 
-    fun allInvestments() : Collection<Any>
+    fun allInvestments() : List<Any>
 
     fun addInvestment(investment: Investment) : Any
 
@@ -16,4 +16,6 @@ interface InvestmentService {
     fun getInvestmentById(id : Long) : Any
 
     fun getInvestment(id: Long) : Any
+
+    fun clearTable()
 }

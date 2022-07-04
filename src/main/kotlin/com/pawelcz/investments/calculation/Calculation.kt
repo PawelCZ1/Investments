@@ -6,18 +6,19 @@ import com.pawelcz.investments.investment.Investment
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
+@Table(name= "calculation")
 class Calculation(
+    @JoinColumn(name = "amount", nullable = false)
     private var amount : BigDecimal,
     @ManyToOne
-    @JoinColumn(name = "investmentId", nullable = false)
+    @JoinColumn(name = "investment_id", nullable = false)
     private var investment: Investment,
+    @JoinColumn(name = "algorithm_type", nullable = false)
     private var algorithmType: Char,
+    @JoinColumn(name = "profit", nullable = false)
     private var profit : BigDecimal
 ) : AbstractJpaPersistable<Long>()  {
 
@@ -31,7 +32,7 @@ class Calculation(
 
     }
 
-
+    @JoinColumn(name = "calculation_date", nullable = false)
     private var calculationDate : LocalDate = LocalDate.now()
 
 

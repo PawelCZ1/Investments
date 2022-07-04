@@ -9,7 +9,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
                              private val investmentService: InvestmentService
 ) : CalculationService {
 
-    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<Any, Collection<Any>>{
+    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<Any, List<Any>>{
         val investment = investmentService.getInvestmentWithId(investmentId)
         if(investment.isEmpty)
             throw RuntimeException("Investment with the specified ID does not exist")
@@ -43,7 +43,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
     override fun getCalculationById(id: Long) = calculationRepository.getCalculationById(id)
 
     override fun calculationListForTheParticularInvestment(id: Long)
-    = calculationRepository.calculationListForTheParticularInvestment(id)
+    = calculationRepository.calculationListForTheParticularInvestment(id).toList()
 
 
 

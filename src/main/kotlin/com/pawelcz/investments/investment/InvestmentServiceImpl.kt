@@ -8,10 +8,10 @@ import java.util.*
 @Service
 class InvestmentServiceImpl(private val investmentRepository: InvestmentRepository) : InvestmentService {
 
-    override fun availableInvestments(): Collection<Any> = investmentRepository.availableInvestments()
+    override fun availableInvestments(): List<Any> = investmentRepository.availableInvestments().toList()
 
 
-    override fun allInvestments(): Collection<Any> = investmentRepository.allInvestments()
+    override fun allInvestments(): List<Any> = investmentRepository.allInvestments().toList()
 
 
     override fun addInvestment(investment: Investment): Any{
@@ -25,6 +25,10 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
     override fun getInvestmentById(id: Long) = investmentRepository.getInvestmentById(id)
 
     override fun getInvestment(id: Long) = investmentRepository.getInvestment(id)
+
+    override fun clearTable() {
+        investmentRepository.deleteAll()
+    }
 
 
 
