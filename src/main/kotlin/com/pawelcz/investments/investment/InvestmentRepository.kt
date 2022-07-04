@@ -17,4 +17,5 @@ interface InvestmentRepository : JpaRepository<Investment, Long> {
     @Query("SELECT id, name, interest_rate, (end_date - start_date) as days FROM investment WHERE id = ?1", nativeQuery = true)
     fun selectLessFromInvestment(id: Long) : Any
 
+
 }

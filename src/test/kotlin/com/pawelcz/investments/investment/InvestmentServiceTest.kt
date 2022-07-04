@@ -24,7 +24,7 @@ internal class InvestmentServiceTest(
 
     @Test
     @Disabled
-    fun doesReturnAllInvestmentsAsList(){
+    fun addInvestmentTest(){
         // given
         val firstTestInvestment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )

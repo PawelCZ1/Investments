@@ -14,7 +14,7 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
 
     override fun addInvestment(investment: Investment): Any{
         investmentRepository.save(investment)
-        return investment.getId()?.let { selectLessFromInvestment(it) }!!
+        return investmentRepository.selectLessFromInvestment(investment.getId()!!)
     }
 
 
