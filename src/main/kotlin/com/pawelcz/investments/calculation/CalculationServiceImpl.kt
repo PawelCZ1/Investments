@@ -2,7 +2,7 @@ package com.pawelcz.investments.calculation
 
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
-import java.util.*
+
 
 @Service
 class CalculationServiceImpl(private val calculationRepository: CalculationRepository,
@@ -10,27 +10,23 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
 ) : CalculationService {
 
     override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<Any, List<Any>>{
-        val investment = investmentService.getInvestmentWithId(investmentId)
-        if(investment.isEmpty)
+        try{
+            return Pair(investmentService.selectEverythingFromInvestment(investmentId), calculationListForTheParticularInvestment(investmentId))
+        }catch (e : RuntimeException){
             throw RuntimeException("Investment with the specified ID does not exist")
-
-        return Pair(investmentService.getInvestmentById(investmentId), calculationListForTheParticularInvestment(investmentId))
+        }
     }
 
     override fun addCalculation(calculation: Calculation) = calculationRepository.save(calculation)
 
     override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Any {
         val investment = investmentService.getInvestmentWithId(investmentId)
-        if(investment.isEmpty)
-            throw RuntimeException("Investment with the specified ID does not exist")
-
         val amount = calculationParameters.getAmount()
         val algorithmType = calculationParameters.getAlgorithmType()
-
-        when(investment.get().Available()){
+        when(investment.Available()){
             true -> {
-                val calculation = Calculation(amount, investment.get(), algorithmType, Calculation.calculateProfit
-                    (amount, investment.get(), algorithmType))
+                val calculation = Calculation(amount, investment, algorithmType, Calculation.calculateProfit
+                    (amount, investment, algorithmType))
                 addCalculation(calculation)
                 return getCalculationById(calculation.getId()!!)
             }

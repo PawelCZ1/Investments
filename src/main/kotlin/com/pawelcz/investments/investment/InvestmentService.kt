@@ -1,7 +1,5 @@
 package com.pawelcz.investments.investment
 
-import java.util.*
-
 
 interface InvestmentService {
 
@@ -11,11 +9,11 @@ interface InvestmentService {
 
     fun addInvestment(investment: Investment) : Any
 
-    fun getInvestmentWithId(id : Long) : Optional<Investment>
+    fun getInvestmentWithId(id : Long) : Investment
 
-    fun getInvestmentById(id : Long) : Any
+    fun selectEverythingFromInvestment(id : Long) : Any
 
-    fun getInvestment(id: Long) : Any
+    fun selectLessFromInvestment(id: Long) : Any
 
     fun clearTable()
 }
