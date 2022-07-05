@@ -44,6 +44,10 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
     override fun calculationListForTheParticularInvestment(id: Long)
     = calculationRepository.calculationListForTheParticularInvestment(id)
 
+    override fun clearTable() {
+        calculationRepository.deleteAll()
+    }
+
 
 
 

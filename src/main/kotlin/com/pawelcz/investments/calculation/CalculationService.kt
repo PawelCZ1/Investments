@@ -12,4 +12,6 @@ interface CalculationService {
     fun addCalculation(investmentId : Long, calculationParameters: CalculationParameters) : Any
     fun getCalculationById(id : Long) : Any
     fun calculationListForTheParticularInvestment(id : Long) : List<Any>
+
+    fun clearTable()
 }

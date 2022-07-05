@@ -52,4 +52,18 @@ internal class CalculationServiceMockTest {
         // then
         verify(exactly = 1) { calculationRepository.calculationListForTheParticularInvestment(1) }
     }
+
+    @Test
+    fun clearTableTest(){
+        // when
+        underTest.clearTable()
+        // then
+        verify(exactly = 1) { calculationRepository.deleteAll() }
+    }
+
+
+
+
+
+
 }

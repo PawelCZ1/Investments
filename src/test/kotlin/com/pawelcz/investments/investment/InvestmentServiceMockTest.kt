@@ -41,6 +41,8 @@ internal class InvestmentServiceMockTest{
         val investmentSlot = slot<Investment>()
         // then
         every { underTest.addInvestment(capture(investmentSlot)) } returns arrayOf(1, "first", 1.06).javaClass
+
+        // test implemented in InvestmentServiceTest.kt //
     }
 
     @Test
@@ -50,6 +52,8 @@ internal class InvestmentServiceMockTest{
         val investment = underTest.getInvestmentWithId(1)
         // then
         assertThat(investment).isEqualTo(investmentRepository.findById(1).get())
+
+        // test implemented in InvestmentServiceTest.kt //
     }
 
 
