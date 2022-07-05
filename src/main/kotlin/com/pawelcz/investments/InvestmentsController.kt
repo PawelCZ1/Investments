@@ -18,20 +18,25 @@ class InvestmentsController(private val investmentService: InvestmentService,
                             private val calculationService: CalculationService
 ) {
 
+    // shows an id and the name of the available investments
     @GetMapping("/investments")
     fun availableInvestments() = investmentService.availableInvestments()
 
+    // shows an id and the name of the available investments
     @GetMapping("/investments/archive")
     fun allInvestments() = investmentService.allInvestments()
 
+    // adding new investment and returning its id, name, interest rate and period in days
     @PostMapping("/investments")
     fun addInvestment(@RequestBody investment: Investment) = investmentService.addInvestment(investment)
 
+    // adding new calculation and returning its properties
     @PostMapping("/investments/{id}/calculations")
     fun calculation(@PathVariable id : Long,
                     @RequestBody calculationParameters: CalculationParameters) =
         calculationService.addCalculation(id, calculationParameters)
 
+    // shows the particular investment and its historical calculations
     @GetMapping("/investments/{id}/calculations")
     fun historicalCalculationsOfTheParticularInvestment(
         @PathVariable id: Long) = calculationService.historicalCalculationsOfTheParticularInvestment(id)
