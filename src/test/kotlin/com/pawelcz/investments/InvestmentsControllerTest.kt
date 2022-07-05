@@ -1,6 +1,7 @@
 package com.pawelcz.investments
 
 import com.pawelcz.investments.calculation.CalculationService
+import com.pawelcz.investments.controller.InvestmentsController
 import com.pawelcz.investments.investment.InvestmentService
 import io.mockk.mockk
 import io.mockk.verify

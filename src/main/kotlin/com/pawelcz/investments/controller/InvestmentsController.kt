@@ -1,4 +1,4 @@
-package com.pawelcz.investments
+package com.pawelcz.investments.controller
 
 
 import com.pawelcz.investments.calculation.CalculationParameters
