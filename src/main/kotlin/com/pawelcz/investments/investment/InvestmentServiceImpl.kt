@@ -1,6 +1,7 @@
 package com.pawelcz.investments.investment
 
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 
 @Service
@@ -13,6 +14,9 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
 
 
     override fun addInvestment(investment: Investment): Any{
+        if(investment.getInterestRate().compareTo(BigDecimal.ONE) == -1)
+            throw RuntimeException("Interest rate shouldn't be lesser than one")
+
         investmentRepository.save(investment)
         return investmentRepository.selectLessFromInvestment(investment.getId()!!)
     }

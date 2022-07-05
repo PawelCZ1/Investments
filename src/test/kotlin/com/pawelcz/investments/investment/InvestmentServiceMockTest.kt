@@ -47,9 +47,9 @@ internal class InvestmentServiceMockTest{
     @Disabled
     fun getInvestmentWithIdTest(){
         // when
-        val investment = underTest.getInvestmentWithId(1).toStr()
+        val investment = underTest.getInvestmentWithId(1)
         // then
-        assertThat(investment).isEqualTo(investmentRepository.findById(1).get().toStr())
+        assertThat(investment).isEqualTo(investmentRepository.findById(1).get())
     }
 
 

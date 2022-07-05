@@ -1,7 +1,9 @@
 package com.pawelcz.investments.calculation
 
+import com.fasterxml.jackson.databind.RuntimeJsonMappingException
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 
 @Service
@@ -22,6 +24,8 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
     override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Any {
         val investment = investmentService.getInvestmentWithId(investmentId)
         val amount = calculationParameters.getAmount()
+        if(amount.compareTo(BigDecimal.ZERO) == -1)
+            throw RuntimeException("Amount cannot be negative")
         val algorithmType = calculationParameters.getAlgorithmType()
         when(investment.Available()){
             true -> {
