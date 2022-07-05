@@ -41,12 +41,12 @@ internal class InvestmentsControllerTest {
     @Test
     @Disabled
     fun addInvestmentTest(){
-        // not yet implemented
+        // not yet implemented, testing would be the same as in the InvestmentServiceTest.kt
     }
 
     @Test
     @Disabled
     fun addCalculationTest(){
-        // not yet implemented
+        // not yet implemented, testing would be the same as in the InvestmentServiceTest.kt
     }
 }
