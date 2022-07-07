@@ -22,7 +22,7 @@ class InvestmentsController(private val investmentService: InvestmentService,
     @GetMapping("/investments")
     fun availableInvestments() = investmentService.availableInvestments()
 
-    // shows an id and the name of the available investments
+    // shows an id and the name of the all investments
     @GetMapping("/investments/archive")
     fun allInvestments() = investmentService.allInvestments()
 
