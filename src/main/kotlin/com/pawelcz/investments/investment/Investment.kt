@@ -29,7 +29,7 @@ class Investment(
     private lateinit var calculations : List<Calculation>
 
     @Transient
-    private val periodInDays : Int = 0
+    private val periodInDays : Int = ChronoUnit.DAYS.between(startDate, endDate).toInt()
     fun getName() = name
     fun getInterestRate() = interestRate
 

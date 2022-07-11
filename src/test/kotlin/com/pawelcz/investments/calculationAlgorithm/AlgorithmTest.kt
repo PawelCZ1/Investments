@@ -14,11 +14,11 @@ internal class AlgorithmTest {
     fun atTheEndOfTheInvestmentPeriodAlgorithmCalculationTest(){
         //given
         val algorithm = AtTheEndOfTheInvestmentPeriodAlgorithm()
-        val testInvestment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
+        val testInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
         // when
         val result = algorithm.calculation(testInvestment)
-        val expected = BigDecimal("1.1236")
+        val expected = BigDecimal("1.0609")
         // then
         assertThat(result).isEqualTo(expected)
     }
@@ -39,7 +39,7 @@ internal class AlgorithmTest {
     @Test
     fun calculateProfitForAtTheEndOfTheInvestmentPeriodAlgorithmTest(){
         // given
-        val testInvestment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
+        val testInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
         val algorithmFactory = AlgorithmFactory()
         // when
