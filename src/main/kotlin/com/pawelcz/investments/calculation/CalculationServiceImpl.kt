@@ -15,7 +15,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
         try{
             return Pair(investmentService.selectEverythingFromInvestment(investmentId), calculationListForTheParticularInvestment(investmentId))
         }catch (e : RuntimeException){
-            throw RuntimeException("Investment with the specified ID does not exist")
+            throw IllegalArgumentException("Investment with the specified ID does not exist")
         }
     }
 
@@ -25,7 +25,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
         val investment = investmentService.getInvestmentWithId(investmentId)
         val amount = calculationParameters.getAmount()
         if(amount.compareTo(BigDecimal.ZERO) == -1)
-            throw RuntimeException("Amount cannot be negative")
+            throw IllegalArgumentException("Amount cannot be negative")
         val algorithmType = calculationParameters.getAlgorithmType()
         when(investment.Available()){
             true -> {
@@ -33,7 +33,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
                 addCalculation(calculation)
                 return getCalculationById(calculation.getId()!!)
             }
-            false -> throw RuntimeException("Investment with the specified ID is no longer available")
+            false -> throw IllegalArgumentException("Investment with the specified ID is no longer available")
         }
     }
 

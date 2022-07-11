@@ -15,7 +15,7 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
 
     override fun addInvestment(investment: Investment): Any{
         if(investment.getInterestRate().compareTo(BigDecimal.ONE) == -1)
-            throw RuntimeException("Interest rate shouldn't be lesser than one")
+            throw IllegalArgumentException("Interest rate shouldn't be lesser than one")
 
         investmentRepository.save(investment)
         return investmentRepository.selectLessFromInvestment(investment.getId()!!)
@@ -25,14 +25,14 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
     override fun getInvestmentWithId(id: Long): Investment {
         val investment = investmentRepository.findById(id)
         if(investment.isEmpty)
-            throw RuntimeException("Investment with the specified ID does not exist")
+            throw IllegalArgumentException("Investment with the specified ID does not exist")
         return investment.get()
     }
 
     override fun selectEverythingFromInvestment(id: Long): Any {
         val investment = investmentRepository.selectEverythingFromInvestment(id)
         if(investment.equals(null))
-            throw RuntimeException("Investment with the specified ID does not exist")
+            throw IllegalArgumentException("Investment with the specified ID does not exist")
         return investment
     }
 

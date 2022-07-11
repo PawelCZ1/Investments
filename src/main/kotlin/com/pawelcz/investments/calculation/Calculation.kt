@@ -11,12 +11,12 @@ import javax.persistence.*
 @Entity
 @Table(name= "calculation")
 class Calculation(
-    @JoinColumn(name = "amount", nullable = false)
+    @Column(name = "amount", nullable = false)
     private var amount : BigDecimal,
     @ManyToOne
     @JoinColumn(name = "investment_id", nullable = false)
     private var investment: Investment,
-    @JoinColumn(name = "algorithm_type", nullable = false)
+    @Column(name = "algorithm_type", nullable = false)
     private var algorithmType: Char,
 
 ) : AbstractJpaPersistable<Long>()  {
@@ -31,10 +31,10 @@ class Calculation(
         }
 
     }
-    @JoinColumn(name = "profit", nullable = false)
+    @Column(name = "profit", nullable = false)
     private var profit = calculateProfit(amount, investment, algorithmType)
 
-    @JoinColumn(name = "calculation_date", nullable = false)
+    @Column(name = "calculation_date", nullable = false)
     private var calculationDate : LocalDate = LocalDate.now()
 
 

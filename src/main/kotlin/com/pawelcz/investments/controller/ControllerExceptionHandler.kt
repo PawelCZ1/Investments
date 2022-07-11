@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ControllerExceptionHandler {
 
     @ExceptionHandler
-    fun handleRunTimeException(ex: RuntimeException): ResponseEntity<ErrorMessageModel> {
+    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ErrorMessageModel> {
 
         val errorMessage = ErrorMessageModel(
             HttpStatus.BAD_REQUEST.value(),

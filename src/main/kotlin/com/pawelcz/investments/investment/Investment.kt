@@ -12,16 +12,16 @@ import javax.persistence.*
 @Entity
 @Table(name= "investment")
 class Investment(
-    @JoinColumn(name = "name", nullable = false)
+    @Column(name = "name", nullable = false)
     private var name: String,
-    @JoinColumn(name = "interest_rate", nullable = false)
+    @Column(name = "interest_rate", nullable = false)
     private var interestRate: BigDecimal,
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "capitalization_period", nullable = false)
+    @Column(name = "capitalization_period", nullable = false)
     private var capitalizationPeriod: CapitalizationPeriodInMonths,
-    @JoinColumn(name = "start_date", nullable = false)
+    @Column(name = "start_date", nullable = false)
     private var startDate: LocalDate,
-    @JoinColumn(name = "end_date", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private var endDate: LocalDate
 ) : AbstractJpaPersistable<Long>() {
 

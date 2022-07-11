@@ -6,7 +6,7 @@ class AlgorithmFactory {
         return when(algorithmType){
             '1' -> AtTheEndOfTheInvestmentPeriodAlgorithm()
             '2' -> OnTheDayOfTheCalculationAlgorithm()
-            else -> throw RuntimeException("Wrong option")
+            else -> throw IllegalArgumentException("Wrong option")
         }
     }
 }
