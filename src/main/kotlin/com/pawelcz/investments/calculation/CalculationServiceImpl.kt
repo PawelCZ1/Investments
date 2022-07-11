@@ -1,6 +1,8 @@
 package com.pawelcz.investments.calculation
 
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException
+import com.pawelcz.investments.dto.calculationListForTheParticularInvestmentDTO
+import com.pawelcz.investments.dto.selectEverythingFromInvestmentDTO
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -11,7 +13,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
                              private val investmentService: InvestmentService
 ) : CalculationService {
 
-    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<Any, List<Any>>{
+    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<selectEverythingFromInvestmentDTO, List<calculationListForTheParticularInvestmentDTO>>{
         try{
             return Pair(investmentService.selectEverythingFromInvestment(investmentId), calculationListForTheParticularInvestment(investmentId))
         }catch (e : RuntimeException){
