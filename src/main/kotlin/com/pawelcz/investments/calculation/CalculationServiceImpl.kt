@@ -1,6 +1,6 @@
 package com.pawelcz.investments.calculation
 
-import com.fasterxml.jackson.databind.RuntimeJsonMappingException
+import com.pawelcz.investments.dto.CalculationParametersDTO
 import com.pawelcz.investments.dto.calculationListForTheParticularInvestmentDTO
 import com.pawelcz.investments.dto.selectEverythingFromInvestmentDTO
 import com.pawelcz.investments.investment.InvestmentService
@@ -23,12 +23,12 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
 
     override fun addCalculation(calculation: Calculation) = calculationRepository.save(calculation)
 
-    override fun addCalculation(investmentId: Long, calculationParameters: CalculationParameters): Any {
+    override fun addCalculation(investmentId: Long, calculationParametersDTO: CalculationParametersDTO): Any {
         val investment = investmentService.getInvestmentWithId(investmentId)
-        val amount = calculationParameters.getAmount()
+        val amount = calculationParametersDTO.getAmount()
         if(amount.compareTo(BigDecimal.ZERO) == -1)
             throw IllegalArgumentException("Amount cannot be negative")
-        val algorithmType = calculationParameters.getAlgorithmType()
+        val algorithmType = calculationParametersDTO.getAlgorithmType()
         when(investment.Available()){
             true -> {
                 val calculation = Calculation(amount, investment, algorithmType)

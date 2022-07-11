@@ -1,10 +1,10 @@
 package com.pawelcz.investments.calculation
 
+import com.pawelcz.investments.dto.CalculationParametersDTO
 import com.pawelcz.investments.investment.CapitalizationPeriodInMonths
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
 import io.mockk.InternalPlatformDsl.toArray
-import io.mockk.InternalPlatformDsl.toStr
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -64,10 +64,10 @@ internal class CalculationServiceTest(
         val testInvestment : Investment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
         val testCalculation : Calculation = Calculation(BigDecimal(5000), testInvestment, '1')
-        val testCalculationParameters = CalculationParameters(BigDecimal(5000), '1')
+        val testCalculationParametersDTO = CalculationParametersDTO(BigDecimal(5000), '1')
         // when
         investmentService.addInvestment(testInvestment)
-        val result = underTest.addCalculation(testInvestment.getId()!!, testCalculationParameters )
+        val result = underTest.addCalculation(testInvestment.getId()!!, testCalculationParametersDTO )
         val expectedValue = underTest.getCalculationById(2)
         // then
         assertThat(result).isEqualTo(expectedValue)

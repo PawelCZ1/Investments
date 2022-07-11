@@ -2,6 +2,7 @@ package com.pawelcz.investments.calculation
 
 import com.pawelcz.investments.AbstractJpaPersistable
 import com.pawelcz.investments.calculationAlgorithm.AlgorithmFactory
+import com.pawelcz.investments.calculationAlgorithm.AlgorithmType
 import com.pawelcz.investments.investment.Investment
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -17,13 +18,14 @@ class Calculation(
     @JoinColumn(name = "investment_id", nullable = false)
     private var investment: Investment,
     @Column(name = "algorithm_type", nullable = false)
-    private var algorithmType: Char,
+    @Enumerated(EnumType.STRING)
+    private var algorithmType: AlgorithmType,
 
 ) : AbstractJpaPersistable<Long>()  {
 
 
     companion object{
-        fun calculateProfit(amount : BigDecimal, investment: Investment, algorithmType: Char) : BigDecimal {
+        fun calculateProfit(amount : BigDecimal, investment: Investment, algorithmType: AlgorithmType) : BigDecimal {
             val algorithmFactory = AlgorithmFactory()
             val algorithm = algorithmFactory.makeAlgorithm(algorithmType)
             val profit = (amount.multiply(algorithm.calculation(investment))).subtract(amount)

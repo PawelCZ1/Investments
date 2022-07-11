@@ -1,7 +1,7 @@
 package com.pawelcz.investments.controller
 
 
-import com.pawelcz.investments.calculation.CalculationParameters
+import com.pawelcz.investments.dto.CalculationParametersDTO
 import com.pawelcz.investments.calculation.CalculationService
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
@@ -33,8 +33,9 @@ class InvestmentsController(private val investmentService: InvestmentService,
     // adding new calculation and returning its properties
     @PostMapping("/investments/{id}/calculations")
     fun calculation(@PathVariable id : Long,
-                    @RequestBody calculationParameters: CalculationParameters) =
-        calculationService.addCalculation(id, calculationParameters)
+                    @RequestBody calculationParametersDTO: CalculationParametersDTO
+    ) =
+        calculationService.addCalculation(id, calculationParametersDTO)
 
     // shows the particular investment and its historical calculations
     @GetMapping("/investments/{id}/calculations")
