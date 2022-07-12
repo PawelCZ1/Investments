@@ -45,7 +45,7 @@ internal class AlgorithmTest {
         // when
         val amount = BigDecimal("5000")
         val result = Calculation.calculateProfit(amount,testInvestment,AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
-        val expected = BigDecimal("618.00")
+        val expected = BigDecimal("304.51")
         // then
         assertThat(result).isEqualTo(expected)
     }

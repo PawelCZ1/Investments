@@ -13,7 +13,8 @@ class OnTheDayOfTheCalculationAlgorithm : Algorithm("OnTheDayOfTheCalculationAlg
 
         val capitalizationsPerYear = investment.CapitalizationPeriod().capitalizationsPerYear
         val interest = BigDecimal.ONE.add(investment.getInterestRate()
-            .divide(BigDecimal(100).multiply(BigDecimal(capitalizationsPerYear)), 10, RoundingMode.HALF_UP))
+            .divide(BigDecimal(100).multiply(BigDecimal(capitalizationsPerYear)),
+                10, RoundingMode.HALF_UP).stripTrailingZeros())
         val periodInDays = ChronoUnit.DAYS.between(investment.StartDate(), LocalDate.now()).toInt()
         var daysPerCapitalization = 0
         when(capitalizationsPerYear){
@@ -25,7 +26,7 @@ class OnTheDayOfTheCalculationAlgorithm : Algorithm("OnTheDayOfTheCalculationAlg
 
         return when(val numberOfCapitalizations = periodInDays / daysPerCapitalization){
             0 -> BigDecimal("1.0")
-            else -> BigDecimal(interest.toDouble()).pow(numberOfCapitalizations)
+            else -> interest.pow(numberOfCapitalizations)
         }
     }
 }
