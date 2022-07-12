@@ -1,5 +1,6 @@
 package com.pawelcz.investments
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.pawelcz.investments.investment.CapitalizationPeriodInMonths
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -22,12 +24,14 @@ import java.time.LocalDate
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @AutoConfigureMockMvc
-internal class InvestmentControllerTest {
+internal class InvestmentControllerTest @Autowired constructor(
+    val mockMvc : MockMvc,
+    val investmentService: InvestmentService,
+    val objectMapper: ObjectMapper
+) {
 
-    @Autowired
-    lateinit var mockMvc : MockMvc
-    @Autowired
-    lateinit var investmentService: InvestmentService
+
+
 
     @AfterEach
     internal fun tearDown() {
@@ -35,7 +39,7 @@ internal class InvestmentControllerTest {
     }
 
     @Nested
-    @DisplayName("allInvestments()")
+    @DisplayName("GET /api/investments/archive")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class AllInvestments{
 
@@ -64,9 +68,9 @@ internal class InvestmentControllerTest {
     }
 
     @Nested
-    @DisplayName("availableInvestments()")
+    @DisplayName("GET /api/investments")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class availableInvestments{
+    inner class AvailableInvestments{
         @Test
         fun shouldReturnAvailableInvestments(){
             // given
@@ -88,6 +92,33 @@ internal class InvestmentControllerTest {
                     jsonPath("$[1].name") {doesNotExist()}
                 }
         }
+
+    }
+
+    @Nested
+    @DisplayName("POST /api/investments")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class AddInvestment{
+
+        @Test
+        fun shouldAddNewInvestment(){
+            // given
+            val testInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
+                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            // when/then
+            mockMvc.post("/api/investments") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(testInvestment)
+
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                }
+
+
+        }
+
 
     }
 

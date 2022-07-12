@@ -1,5 +1,6 @@
 package com.pawelcz.investments
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.util.ProxyUtils
 import java.io.Serializable
 import javax.persistence.GeneratedValue
@@ -17,6 +18,7 @@ abstract class AbstractJpaPersistable<T : Serializable> {
     @GeneratedValue
     private var id: T? = null
 
+    @JsonIgnore
     fun getId(): T? {
         return id
     }

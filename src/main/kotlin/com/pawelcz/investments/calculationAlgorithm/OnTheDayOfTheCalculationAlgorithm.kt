@@ -11,11 +11,11 @@ import java.time.temporal.ChronoUnit
 class OnTheDayOfTheCalculationAlgorithm : Algorithm("OnTheDayOfTheCalculationAlgorithm") {
     override fun calculation(investment: Investment) : BigDecimal {
 
-        val capitalizationsPerYear = investment.CapitalizationPeriod().capitalizationsPerYear
+        val capitalizationsPerYear = investment.getCapitalizationPeriod().capitalizationsPerYear
         val interest = BigDecimal.ONE.add(investment.getInterestRate()
             .divide(BigDecimal(100).multiply(BigDecimal(capitalizationsPerYear)),
                 10, RoundingMode.HALF_UP).stripTrailingZeros())
-        val periodInDays = ChronoUnit.DAYS.between(investment.StartDate(), LocalDate.now()).toInt()
+        val periodInDays = ChronoUnit.DAYS.between(investment.getStartDate(), LocalDate.now()).toInt()
         var daysPerCapitalization = 0
         when(capitalizationsPerYear){
             12 -> daysPerCapitalization = 30

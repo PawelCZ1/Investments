@@ -1,6 +1,5 @@
 package com.pawelcz.investments.investment
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.pawelcz.investments.AbstractJpaPersistable
 import com.pawelcz.investments.calculation.Calculation
@@ -34,10 +33,10 @@ class Investment(
     fun getName() = name
     fun getInterestRate() = interestRate
 
-    fun CapitalizationPeriod() = capitalizationPeriod
-    fun StartDate() = startDate
-    fun EndDate() = endDate
-
+    fun getCapitalizationPeriod() = capitalizationPeriod
+    fun getStartDate() = startDate
+    fun getEndDate() = endDate
+    @JsonIgnore
     fun getPeriodInDays() = ChronoUnit.DAYS.between(startDate, endDate).toInt()
 
     fun Available() = endDate >= LocalDate.now()

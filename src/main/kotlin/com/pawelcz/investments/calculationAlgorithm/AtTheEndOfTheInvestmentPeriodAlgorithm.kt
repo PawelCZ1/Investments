@@ -6,7 +6,7 @@ import java.math.RoundingMode
 
 class AtTheEndOfTheInvestmentPeriodAlgorithm : Algorithm("AtTheEndOfTheInvestmentPeriodAlgorithm") {
     override fun calculation(investment: Investment) : BigDecimal {
-        val capitalizationsPerYear = investment.CapitalizationPeriod().capitalizationsPerYear
+        val capitalizationsPerYear = investment.getCapitalizationPeriod().capitalizationsPerYear
         val interest = BigDecimal.ONE.add(investment.getInterestRate()
             .divide(BigDecimal(100).multiply(BigDecimal(capitalizationsPerYear)),
                 10, RoundingMode.HALF_UP).stripTrailingZeros())
