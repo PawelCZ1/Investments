@@ -1,6 +1,8 @@
 package com.pawelcz.investments
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.pawelcz.investments.calculationAlgorithm.AlgorithmType
+import com.pawelcz.investments.dto.CalculationParametersDTO
 import com.pawelcz.investments.investment.CapitalizationPeriodInMonths
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.web.bind.annotation.PathVariable
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -114,11 +117,76 @@ internal class InvestmentControllerTest @Autowired constructor(
                 .andDo { print() }
                 .andExpect {
                     status { isOk() }
+                    content { contentType(MediaType.APPLICATION_JSON) }
+                    jsonPath("$.id") {isNumber()}
+                    jsonPath("$.name") {value("first")}
+                    jsonPath("$.interest_Rate") {value(BigDecimal("6.0"))}
+                    jsonPath("$.days") {value(484)}
                 }
 
 
         }
 
+        @Test
+        fun shouldReturnBadRequest(){
+            // given
+            val testInvestment = Investment("badRequest", BigDecimal(-1), CapitalizationPeriodInMonths.SIX,
+                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            // when/then
+            mockMvc.post("/api/investments") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(testInvestment)
+
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isBadRequest() }
+                }
+
+        }
+
+
+    }
+
+    @Nested
+    @DisplayName("POST /api/investments/{id}/calculations")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class Calculation{
+
+        @Test
+        fun shouldAddNewCalculation(){
+            // given
+            val testInvestment = Investment("test", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
+                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val calculationParametersDTO = CalculationParametersDTO(BigDecimal("5000")
+                , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+            testInvestment.setId(1L)
+            val id = testInvestment.getId()
+            investmentService.addInvestment(testInvestment)
+            // when/then
+            mockMvc.post("/api/investments/$id/calculations") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(calculationParametersDTO)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                }
+
+
+
+
+        }
+
+        @Test
+        fun shouldReturnBadRequest(){
+            // given
+            val testInvestment = Investment("test", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
+                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val calculationParametersDTO = CalculationParametersDTO(BigDecimal("5000")
+                , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+
+        }
 
     }
 
