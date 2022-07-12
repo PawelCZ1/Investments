@@ -12,8 +12,8 @@ class OnTheDayOfTheCalculationAlgorithm : Algorithm("OnTheDayOfTheCalculationAlg
     override fun calculation(investment: Investment) : BigDecimal {
 
         val capitalizationsPerYear = investment.CapitalizationPeriod().capitalizationsPerYear
-        val interestRate = BigDecimal("1.0").add(investment.getInterestRate()
-            .divide(BigDecimal("100.0").multiply(BigDecimal(capitalizationsPerYear.toString())), 2 , RoundingMode.CEILING))
+        val interest = BigDecimal.ONE.add(investment.getInterestRate()
+            .divide(BigDecimal(100).multiply(BigDecimal(capitalizationsPerYear)), 10, RoundingMode.HALF_UP))
         val periodInDays = ChronoUnit.DAYS.between(investment.StartDate(), LocalDate.now()).toInt()
         var daysPerCapitalization = 0
         when(capitalizationsPerYear){
@@ -25,7 +25,7 @@ class OnTheDayOfTheCalculationAlgorithm : Algorithm("OnTheDayOfTheCalculationAlg
 
         return when(val numberOfCapitalizations = periodInDays / daysPerCapitalization){
             0 -> BigDecimal("1.0")
-            else -> interestRate.pow(numberOfCapitalizations)
+            else -> BigDecimal(interest.toDouble()).pow(numberOfCapitalizations)
         }
     }
 }

@@ -4,7 +4,7 @@ import com.pawelcz.investments.calculationAlgorithm.AlgorithmType
 import java.math.BigDecimal
 import java.time.LocalDate
 
-interface getCalculationByIdDTO {
+interface GetCalculationByIdDTO {
     fun getAmount() : BigDecimal
     fun getCalculation_Date() : LocalDate
     fun getInvestment_Id() : Long

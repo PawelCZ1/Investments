@@ -1,8 +1,6 @@
 package com.pawelcz.investments.dto
 
-import java.math.BigDecimal
-
-interface  allAndAvailableInvestmentsDTO
+interface  AllAndAvailableInvestmentsDTO
  {
     fun getId() : Long
     fun getName() : String

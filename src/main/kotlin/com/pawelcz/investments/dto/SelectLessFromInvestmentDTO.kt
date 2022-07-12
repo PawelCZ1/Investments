@@ -2,7 +2,7 @@ package com.pawelcz.investments.dto
 
 import java.math.BigDecimal
 
-interface selectLessFromInvestmentDTO {
+interface SelectLessFromInvestmentDTO {
     fun getId() : Long
     fun getName(): String
     fun getInterest_Rate() : BigDecimal

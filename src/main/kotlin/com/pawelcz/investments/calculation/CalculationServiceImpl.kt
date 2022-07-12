@@ -1,8 +1,9 @@
 package com.pawelcz.investments.calculation
 
 import com.pawelcz.investments.dto.CalculationParametersDTO
-import com.pawelcz.investments.dto.calculationListForTheParticularInvestmentDTO
-import com.pawelcz.investments.dto.selectEverythingFromInvestmentDTO
+import com.pawelcz.investments.dto.CalculationListForTheParticularInvestmentDTO
+import com.pawelcz.investments.dto.GetCalculationByIdDTO
+import com.pawelcz.investments.dto.SelectEverythingFromInvestmentDTO
 import com.pawelcz.investments.investment.InvestmentService
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -13,7 +14,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
                              private val investmentService: InvestmentService
 ) : CalculationService {
 
-    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<selectEverythingFromInvestmentDTO, List<calculationListForTheParticularInvestmentDTO>>{
+    override fun historicalCalculationsOfTheParticularInvestment(investmentId: Long): Pair<SelectEverythingFromInvestmentDTO, List<CalculationListForTheParticularInvestmentDTO>>{
         try{
             return Pair(investmentService.selectEverythingFromInvestment(investmentId), calculationListForTheParticularInvestment(investmentId))
         }catch (e : RuntimeException){
@@ -23,7 +24,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
 
     override fun addCalculation(calculation: Calculation) = calculationRepository.save(calculation)
 
-    override fun addCalculation(investmentId: Long, calculationParametersDTO: CalculationParametersDTO): Any {
+    override fun addCalculation(investmentId: Long, calculationParametersDTO: CalculationParametersDTO): GetCalculationByIdDTO {
         val investment = investmentService.getInvestmentWithId(investmentId)
         val amount = calculationParametersDTO.getAmount()
         if(amount.compareTo(BigDecimal.ZERO) == -1)
