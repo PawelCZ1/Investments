@@ -9,8 +9,8 @@ internal class AlgorithmFactoryTest{
     fun makeAlgorithmTest(){
         // given
         val algorithmFactory = AlgorithmFactory()
-        val firstOption = '1'
-        val secondOption = '2'
+        val firstOption = AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD
+        val secondOption = AlgorithmType.ON_THE_DAY_OF_THE_CALCULATION
         // when
         val firstResult = algorithmFactory.makeAlgorithm(firstOption)
         val secondResult = algorithmFactory.makeAlgorithm(secondOption)

@@ -39,17 +39,15 @@ internal class InvestmentRepositoryTest(
         underTest.save(secondTestInvestment)
         val result = underTest.allInvestments()
         val expected = 2
-        val firstObject = arrayOf(1, "first")
-        val secondObject = arrayOf(2, "second")
+        val firstObject = arrayOf(1L, "first")
+        val secondObject = arrayOf(2L, "second")
 
         // then
         assertThat(result.size).isEqualTo(expected)
         assertThat(result[0]).isNotNull
         assertThat(result[1]).isNotNull
-        assertThat(result[0].toStr()).isEqualTo(firstObject.contentToString())
-        assertThat(result[1].toStr()).isEqualTo(secondObject.contentToString())
-        assertThat(result[0]).isExactlyInstanceOf(firstObject.javaClass)
-        assertThat(result[0]).isExactlyInstanceOf(secondObject.javaClass)
+        assertThat(arrayOf(result[0].getId(), result[0].getName())).isEqualTo(firstObject)
+        assertThat(arrayOf(result[1].getId(), result[1].getName())).isEqualTo(secondObject)
     }
 
     @Test
@@ -64,12 +62,11 @@ internal class InvestmentRepositoryTest(
         underTest.save(secondTestInvestment)
         val result = underTest.availableInvestments()
         val expected = 1
-        val firstObject = arrayOf(1, "first")
+        val firstObject = arrayOf(1L, "first")
         // then
         assertThat(result.size).isEqualTo(expected)
         assertThat(result[0]).isNotNull
-        assertThat(result[0].toStr()).isEqualTo(firstObject.contentToString())
-        assertThat(result[0]).isExactlyInstanceOf(firstObject.javaClass)
+        assertThat(arrayOf(result[0].getId(), result[0].getName())).isEqualTo(firstObject)
     }
 
     @Test
@@ -80,12 +77,12 @@ internal class InvestmentRepositoryTest(
         // when
         underTest.save(firstTestInvestment)
         val result = underTest.selectEverythingFromInvestment(1)
-        val testObject = arrayOf(1, "first", BigDecimal("1.06"),CapitalizationPeriodInMonths.SIX,
+        val testObject = arrayOf(1L, "first", BigDecimal("1.06"),CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15"))
         // then
         assertThat(result).isNotNull
-        assertThat(result.toArray().contentToString()).isEqualTo(testObject.contentToString())
-        assertThat(result).isExactlyInstanceOf(testObject.javaClass)
+        assertThat(arrayOf(result.getId(), result.getName(), result.getInterest_Rate(),
+            result.getCapitalization_Period(),result.getStart_Date(), result.getEnd_Date())).isEqualTo(testObject)
     }
 
     @Test
@@ -96,12 +93,12 @@ internal class InvestmentRepositoryTest(
         // when
         underTest.save(firstTestInvestment)
         val result = underTest.selectLessFromInvestment(1)
-        val testObject = arrayOf(1, "first", BigDecimal("1.06"),
-            ChronoUnit.DAYS.between(LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15")))
+        val testObject = arrayOf(1L, "first", BigDecimal("1.06"),
+            ChronoUnit.DAYS.between(LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15")).toInt())
         // then
         assertThat(result).isNotNull
-        assertThat(result.toArray().contentToString()).isEqualTo(testObject.contentToString())
-        assertThat(result).isExactlyInstanceOf(testObject.javaClass)
+        assertThat(arrayOf(result.getId(), result.getName(), result.getInterest_Rate(),
+            result.getDays())).isEqualTo(testObject)
 
     }
 }

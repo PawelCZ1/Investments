@@ -1,5 +1,6 @@
 package com.pawelcz.investments.calculation
 
+import com.pawelcz.investments.calculationAlgorithm.AlgorithmType
 import com.pawelcz.investments.investment.CapitalizationPeriodInMonths
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
@@ -27,7 +28,8 @@ internal class CalculationServiceMockTest {
         // given
         val testInvestment : Investment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
-        val testCalculation : Calculation = Calculation(BigDecimal(5000), testInvestment, '1')
+        val testCalculation : Calculation = Calculation(BigDecimal(5000), testInvestment,
+            AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
         // when
         underTest.addCalculation(testCalculation)
         // then
