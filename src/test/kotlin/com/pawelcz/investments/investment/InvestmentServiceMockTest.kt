@@ -1,16 +1,15 @@
 package com.pawelcz.investments.investment
 
-import io.mockk.InternalPlatformDsl.toArray
-import io.mockk.InternalPlatformDsl.toStr
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.verify
+
+import io.mockk.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+
+import org.mockito.Mockito.verify
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.util.Optional
 
 
 internal class InvestmentServiceMockTest{
@@ -23,7 +22,7 @@ internal class InvestmentServiceMockTest{
         // when
         val investments = underTest.allInvestments()
         // then
-        verify(exactly = 1) { investmentRepository.allInvestments() }
+        verify(exactly = 1) { investmentRepository.allInvestments()}
     }
 
     @Test
@@ -31,16 +30,19 @@ internal class InvestmentServiceMockTest{
         // when
         val investments = underTest.availableInvestments()
         // then
-        verify(exactly = 1) { investmentRepository.availableInvestments() }
+        verify(exactly = 1) { investmentRepository.availableInvestments()}
     }
 
     @Test
     @Disabled
     fun addInvestmentTest(){
         // when
-        val investmentSlot = slot<Investment>()
+        val investment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
+            LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
         // then
-        every { underTest.addInvestment(capture(investmentSlot)) } returns arrayOf(1, "first", 1.06).javaClass
+       // every { investmentRepository.save(any()) } returns Investment()
+
+        //assertThat(investmentSlot.captured.javaClass).isEqualTo(Investment::class.java)
 
         // test implemented in InvestmentServiceTest.kt //
     }
@@ -49,9 +51,9 @@ internal class InvestmentServiceMockTest{
     @Disabled
     fun getInvestmentWithIdTest(){
         // when
-        val investment = underTest.getInvestmentWithId(1)
+        val testObject : Investment = underTest.getInvestmentWithId(1)
         // then
-        assertThat(investment).isEqualTo(investmentRepository.findById(1).get())
+        verify(exactly = 1) {investmentRepository.findById(1).get()}
 
         // test implemented in InvestmentServiceTest.kt //
     }
@@ -63,7 +65,7 @@ internal class InvestmentServiceMockTest{
         // when
         val investment = underTest.selectEverythingFromInvestment(1)
         // then
-        verify(exactly = 1) { investmentRepository.selectEverythingFromInvestment(1) }
+        verify(exactly = 1) { investmentRepository.selectEverythingFromInvestment(1)}
 
     }
 

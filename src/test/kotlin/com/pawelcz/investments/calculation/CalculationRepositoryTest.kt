@@ -38,19 +38,22 @@ internal class CalculationRepositoryTest(
     @Test
     fun getCalculationByIdTest(){
         // given
-        val testInvestment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
+        val testInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
-        val testCalculation = Calculation(BigDecimal(5000), testInvestment, AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+        val testCalculation = Calculation(BigDecimal(5000), testInvestment,
+            AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
         // when
         mockInvestmentRepository.save(testInvestment)
         underTest.save(testCalculation)
         val result = underTest.getCalculationById(2)
         val testObject = arrayOf(BigDecimal("5000.00")
-        , LocalDate.now(), testInvestment.getId(), '1', testCalculation.getProfit())
+        , LocalDate.now(), testInvestment.getId(), AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD,
+            testCalculation.getProfit())
         // then
         assertThat(result).isNotNull
-        assertThat(result.toArray().contentToString()).isEqualTo(testObject.contentToString())
-        assertThat(result).isExactlyInstanceOf(testObject.javaClass)
+        assertThat(arrayOf(result.getAmount(),result.getCalculation_Date(), result.getInvestment_Id(),
+            result.getAlgorithm_Type(),result.getProfit())).isEqualTo(testObject)
+
     }
 
     @Test
@@ -58,9 +61,12 @@ internal class CalculationRepositoryTest(
         // given
         val testInvestment = Investment("first", BigDecimal("1.06"), CapitalizationPeriodInMonths.SIX,
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
-        val firstTestCalculation = Calculation(BigDecimal(5000), testInvestment, AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
-        val secondTestCalculation = Calculation(BigDecimal(4000), testInvestment, AlgorithmType.ON_THE_DAY_OF_THE_CALCULATION)
-        val thirdTestCalculation = Calculation(BigDecimal(3000), testInvestment, AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+        val firstTestCalculation = Calculation(BigDecimal(5000), testInvestment,
+            AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+        val secondTestCalculation = Calculation(BigDecimal(4000), testInvestment,
+            AlgorithmType.ON_THE_DAY_OF_THE_CALCULATION)
+        val thirdTestCalculation = Calculation(BigDecimal(3000), testInvestment,
+            AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
         // when
         mockInvestmentRepository.save(testInvestment)
         underTest.save(firstTestCalculation)
@@ -68,16 +74,18 @@ internal class CalculationRepositoryTest(
         underTest.save(thirdTestCalculation)
         val result = underTest.calculationListForTheParticularInvestment(testInvestment.getId()!!)
         val testObjectPartOne = arrayOf(BigDecimal("5000.00")
-            , Date.valueOf(LocalDate.now()),  '1', firstTestCalculation.getProfit())
+                , LocalDate.now(),  AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD, firstTestCalculation.getProfit())
         val testObjectPartTwo = arrayOf(BigDecimal("4000.00")
-            , Date.valueOf(LocalDate.now()),  '2', secondTestCalculation.getProfit())
+            , LocalDate.now(),  AlgorithmType.ON_THE_DAY_OF_THE_CALCULATION, secondTestCalculation.getProfit())
         val testObjectPartThree = arrayOf(BigDecimal("3000.00")
-            , Date.valueOf(LocalDate.now()),  '1', thirdTestCalculation.getProfit())
-        val testObject = listOf(testObjectPartOne, testObjectPartTwo, testObjectPartThree)
+            , LocalDate.now(),  AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD, thirdTestCalculation.getProfit())
+        val testObject = arrayOf(testObjectPartOne, testObjectPartTwo, testObjectPartThree)
         // then
         assertThat(result).isNotNull
-        assertThat(result.toTypedArray()).isEqualTo(testObject.toTypedArray())
-        // shows same class but fail// assertThat(result).hasSameClassAs(testObject)
-
+        assertThat(arrayOf(arrayOf(result[0].getAmount(), result[0].getCalculation_Date(),
+            result[0].getAlgorithm_Type(), result[0].getProfit()), arrayOf(result[1].getAmount(),
+            result[1].getCalculation_Date(), result[1].getAlgorithm_Type(), result[1].getProfit()),
+            arrayOf(result[2].getAmount(), result[2].getCalculation_Date(), result[2].getAlgorithm_Type(),
+                result[2].getProfit()))).isEqualTo(testObject)
     }
 }

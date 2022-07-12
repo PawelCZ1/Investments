@@ -2,6 +2,7 @@ package com.pawelcz.investments.investment
 
 import com.pawelcz.investments.dto.AllAndAvailableInvestmentsDTO
 import com.pawelcz.investments.dto.SelectEverythingFromInvestmentDTO
+import com.pawelcz.investments.dto.SelectLessFromInvestmentDTO
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -13,9 +14,9 @@ class InvestmentServiceImpl(private val investmentRepository: InvestmentReposito
 
     override fun allInvestments(): List<AllAndAvailableInvestmentsDTO> = investmentRepository.allInvestments()
 
-    override fun addInvestment(investment: Investment): Any{
-        if(investment.getInterestRate().compareTo(BigDecimal.ONE) == -1)
-            throw IllegalArgumentException("Interest rate shouldn't be lesser than one")
+    override fun addInvestment(investment: Investment): SelectLessFromInvestmentDTO {
+        if(investment.getInterestRate().compareTo(BigDecimal.ZERO) == -1)
+            throw IllegalArgumentException("Interest rate shouldn't be lesser than zero")
 
         investmentRepository.save(investment)
         return investmentRepository.selectLessFromInvestment(investment.getId()!!)

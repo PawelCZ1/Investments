@@ -11,7 +11,7 @@ interface InvestmentService {
 
     fun allInvestments() : List<AllAndAvailableInvestmentsDTO>
 
-    fun addInvestment(investment: Investment) : Any
+    fun addInvestment(investment: Investment) : SelectLessFromInvestmentDTO
 
     fun getInvestmentWithId(id : Long) : Investment
 

@@ -2,7 +2,6 @@ package com.pawelcz.investments.calculationAlgorithm
 
 import com.pawelcz.investments.investment.Investment
 import java.math.BigDecimal
-import java.math.MathContext
 import java.math.RoundingMode
 
 class AtTheEndOfTheInvestmentPeriodAlgorithm : Algorithm("AtTheEndOfTheInvestmentPeriodAlgorithm") {

@@ -46,21 +46,4 @@ class Calculation(
     fun getAlgorithmType() = algorithmType
     fun getProfit() = profit
 
-
-
-
-
-
-
-    override fun toString(): String {
-        return "{" +
-                "amount=$amount" +
-                ", investmentId=${investment.getId()}" +
-                ", algorithmType=$algorithmType" +
-                ", profit=$profit" +
-                ", calculationDate=$calculationDate" +
-                "}"
-    }
-
-
 }

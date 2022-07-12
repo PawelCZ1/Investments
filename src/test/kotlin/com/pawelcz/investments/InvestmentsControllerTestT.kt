@@ -7,9 +7,11 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 
 
-internal class InvestmentsControllerTest {
+internal class InvestmentsControllerTestT {
     private val investmentService : InvestmentService = mockk(relaxed = true)
     private val calculationService : CalculationService = mockk(relaxed = true)
     private val underTest : InvestmentsController = InvestmentsController(investmentService, calculationService)

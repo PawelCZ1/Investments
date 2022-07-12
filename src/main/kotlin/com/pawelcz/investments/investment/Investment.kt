@@ -9,6 +9,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.persistence.*
 
+
 @Entity
 @Table(name= "investment")
 class Investment(
@@ -41,20 +42,6 @@ class Investment(
 
     fun Available() = endDate >= LocalDate.now()
 
-
-
-
-
     fun calculationList() = calculations
-    override fun toString(): String {
-        return "{" +
-                "id='${getId()}'" +
-                ", name='$name'" +
-                ", interestRate=$interestRate" +
-                ", periodInDays=$periodInDays" +
-                "}"
-
-    }
-
 
 }
