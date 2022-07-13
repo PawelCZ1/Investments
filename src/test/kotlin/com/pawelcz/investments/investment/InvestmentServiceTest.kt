@@ -42,8 +42,12 @@ internal class InvestmentServiceTest(
         val expected = 2
         // then
         assertThat(result.size).isEqualTo(expected)
-        assertThat(firstTestObject.toStr()).isEqualTo(comparableToFirstTestObject.toStr())
-        assertThat(secondTestObject.toStr()).isEqualTo(comparableToSecondTestObject.toStr())
+        assertThat(arrayOf(firstTestObject.getId(),firstTestObject.getName(),
+            firstTestObject.getInterest_Rate(), firstTestObject.getDays())
+            .contentToString()).isEqualTo(comparableToFirstTestObject.contentToString())
+        assertThat(arrayOf(secondTestObject.getId(),secondTestObject.getName(),
+            secondTestObject.getInterest_Rate(), secondTestObject.getDays())
+            .contentToString()).isEqualTo(comparableToSecondTestObject.contentToString())
 
     }
 
@@ -54,7 +58,7 @@ internal class InvestmentServiceTest(
             LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
         // when
         underTest.addInvestment(testInvestment)
-        val investment = underTest.getInvestmentWithId(1)
+        val investment = underTest.getInvestmentWithId(testInvestment.getId()!!)
         // then
         assertThat(investment).isEqualTo(testInvestment)
     }
