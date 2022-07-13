@@ -1,26 +1,25 @@
 package com.pawelcz.investments
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.pawelcz.investments.calculation.CalculationService
 import com.pawelcz.investments.calculationAlgorithm.AlgorithmType
 import com.pawelcz.investments.dto.CalculationParametersDTO
 import com.pawelcz.investments.investment.CapitalizationPeriodInMonths
 import com.pawelcz.investments.investment.Investment
 import com.pawelcz.investments.investment.InvestmentService
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import org.springframework.web.bind.annotation.PathVariable
 import java.math.BigDecimal
 import java.time.LocalDate
+
 
 
 @SpringBootTest(
@@ -30,27 +29,21 @@ import java.time.LocalDate
 internal class InvestmentControllerTest @Autowired constructor(
     val mockMvc : MockMvc,
     val investmentService: InvestmentService,
+    val calculationService: CalculationService,
     val objectMapper: ObjectMapper
 ) {
-
-
-
-
-    @AfterEach
-    internal fun tearDown() {
-        investmentService.clearTable()
-    }
 
     @Nested
     @DisplayName("GET /api/investments/archive")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class AllInvestments{
 
+        @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
         @Test
         fun shouldReturnAllInvestments(){
             // given
             val firstTestInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
-                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+                LocalDate.parse("2021-04-18"), LocalDate.parse("2024-04-15") )
             val secondTestInvestment = Investment("second", BigDecimal("8"), CapitalizationPeriodInMonths.THREE,
                 LocalDate.parse("2021-01-15"), LocalDate.parse("2022-06-15") )
             investmentService.addInvestment(firstTestInvestment)
@@ -61,12 +54,14 @@ internal class InvestmentControllerTest @Autowired constructor(
                 .andExpect {
                     status { isOk() }
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$[0].id") {isNumber()}
+                    jsonPath("$[0].id") {value(firstTestInvestment.getId())}
                     jsonPath("$[0].name") {value("first")}
-                    jsonPath("$[1].id") {isNumber()}
+                    jsonPath("$[1].id") {value(secondTestInvestment.getId())}
                     jsonPath("$[1].name") {value("second")}
                 }
+
         }
+
 
     }
 
@@ -74,6 +69,7 @@ internal class InvestmentControllerTest @Autowired constructor(
     @DisplayName("GET /api/investments")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class AvailableInvestments{
+        @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
         @Test
         fun shouldReturnAvailableInvestments(){
             // given
@@ -89,14 +85,17 @@ internal class InvestmentControllerTest @Autowired constructor(
                 .andExpect {
                     status { isOk() }
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$[0].id") {isNumber()}
+                    jsonPath("$[0].id") {value(firstTestInvestment.getId())}
                     jsonPath("$[0].name") {value("first")}
                     jsonPath("$[1].id") {doesNotExist()}
                     jsonPath("$[1].name") {doesNotExist()}
                 }
+
         }
 
     }
+
+
 
     @Nested
     @DisplayName("POST /api/investments")
@@ -106,8 +105,8 @@ internal class InvestmentControllerTest @Autowired constructor(
         @Test
         fun shouldAddNewInvestment(){
             // given
-            val testInvestment = Investment("first", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
-                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val testInvestment = Investment("test", BigDecimal("8"), CapitalizationPeriodInMonths.THREE,
+                LocalDate.parse("2021-01-15"), LocalDate.parse("2022-06-15") )
             // when/then
             mockMvc.post("/api/investments") {
                 contentType = MediaType.APPLICATION_JSON
@@ -118,11 +117,12 @@ internal class InvestmentControllerTest @Autowired constructor(
                 .andExpect {
                     status { isOk() }
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$.id") {isNumber()}
-                    jsonPath("$.name") {value("first")}
-                    jsonPath("$.interest_Rate") {value(BigDecimal("6.0"))}
-                    jsonPath("$.days") {value(484)}
+                    jsonPath("$.id") {testInvestment.getId()}
+                    jsonPath("$.name") {value("test")}
+                    jsonPath("$.interest_Rate") {value(BigDecimal("8.0"))}
+                    jsonPath("$.days") {value(516)}
                 }
+
 
 
         }
@@ -130,8 +130,8 @@ internal class InvestmentControllerTest @Autowired constructor(
         @Test
         fun shouldReturnBadRequest(){
             // given
-            val testInvestment = Investment("badRequest", BigDecimal(-1), CapitalizationPeriodInMonths.SIX,
-                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val testInvestment = Investment("test", BigDecimal(-1), CapitalizationPeriodInMonths.THREE,
+                LocalDate.parse("2021-01-15"), LocalDate.parse("2022-06-15") )
             // when/then
             mockMvc.post("/api/investments") {
                 contentType = MediaType.APPLICATION_JSON
@@ -156,8 +156,8 @@ internal class InvestmentControllerTest @Autowired constructor(
         @Test
         fun shouldAddNewCalculation(){
             // given
-            val testInvestment = Investment("test", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
-                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val testInvestment = Investment("test", BigDecimal("8"), CapitalizationPeriodInMonths.THREE,
+                LocalDate.parse("2021-01-15"), LocalDate.parse("2023-06-15") )
             val calculationParametersDTO = CalculationParametersDTO(BigDecimal("5000")
                 , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
             testInvestment.setId(1L)
@@ -174,17 +174,76 @@ internal class InvestmentControllerTest @Autowired constructor(
                 }
 
 
-
-
         }
 
         @Test
         fun shouldReturnBadRequest(){
             // given
-            val testInvestment = Investment("test", BigDecimal("6"), CapitalizationPeriodInMonths.SIX,
-                LocalDate.parse("2022-04-18"), LocalDate.parse("2023-08-15") )
+            val testInvestment = Investment("test", BigDecimal("8"), CapitalizationPeriodInMonths.THREE,
+                LocalDate.parse("2021-01-15"), LocalDate.parse("2022-06-15") )
             val calculationParametersDTO = CalculationParametersDTO(BigDecimal("5000")
                 , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+            testInvestment.setId(1L)
+            val id = 50L
+            investmentService.addInvestment(testInvestment)
+            // when/then
+            mockMvc.post("/api/investments/$id/calculations") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(calculationParametersDTO)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isBadRequest() }
+                }
+
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("GET /api/investments/{id}/calculations")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class HistoricalCalculationsOfTheParticularInvestment{
+
+        @Test
+        fun shouldReturnInvestmentAndItsHistoricalCalculations(){
+            // given
+            val testInvestment = Investment("test", BigDecimal("8"), CapitalizationPeriodInMonths.THREE,
+                LocalDate.parse("2021-01-15"), LocalDate.parse("2022-09-15") )
+            val firstCalculationParametersDTO = CalculationParametersDTO(BigDecimal("5000")
+                , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+            val secondCalculationParametersDTO = CalculationParametersDTO(BigDecimal("6000")
+                , AlgorithmType.ON_THE_DAY_OF_THE_CALCULATION)
+            val thirdCalculationParametersDTO = CalculationParametersDTO(BigDecimal("7000")
+                , AlgorithmType.AT_END_OF_THE_INVESTMENT_PERIOD)
+            testInvestment.setId(1L)
+            val id = testInvestment.getId()
+            investmentService.addInvestment(testInvestment)
+            if (id != null) {
+                calculationService.addCalculation(id, firstCalculationParametersDTO)
+                calculationService.addCalculation(id, secondCalculationParametersDTO)
+                calculationService.addCalculation(id, thirdCalculationParametersDTO)
+            }
+
+            // when/then
+            mockMvc.get("/api/investments/$id/calculations")
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                }
+        }
+
+        @Test
+        fun shouldReturnBadRequest(){
+            // given
+            val id = 50L
+            // when/then
+            mockMvc.get("/api/investments/$id/calculations")
+                .andDo { print() }
+                .andExpect {
+                    status { isBadRequest() }
+                }
 
         }
 

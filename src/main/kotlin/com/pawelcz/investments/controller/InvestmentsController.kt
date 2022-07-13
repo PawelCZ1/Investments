@@ -42,4 +42,5 @@ class InvestmentsController(private val investmentService: InvestmentService,
     fun historicalCalculationsOfTheParticularInvestment(
         @PathVariable id: Long) = calculationService.historicalCalculationsOfTheParticularInvestment(id)
 
+
 }

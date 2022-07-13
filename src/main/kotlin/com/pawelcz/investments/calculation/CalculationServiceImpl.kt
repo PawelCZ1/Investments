@@ -30,7 +30,7 @@ class CalculationServiceImpl(private val calculationRepository: CalculationRepos
         if(amount.compareTo(BigDecimal.ZERO) == -1)
             throw IllegalArgumentException("Amount cannot be negative")
         val algorithmType = calculationParametersDTO.getAlgorithmType()
-        when(investment.Available()){
+        when(investment.available()){
             true -> {
                 val calculation = Calculation(amount, investment, algorithmType)
                 addCalculation(calculation)

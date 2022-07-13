@@ -39,7 +39,7 @@ class Investment(
     @JsonIgnore
     fun getPeriodInDays() = ChronoUnit.DAYS.between(startDate, endDate).toInt()
 
-    fun Available() = endDate >= LocalDate.now()
+    fun available() = endDate >= LocalDate.now()
 
     fun calculationList() = calculations
 
