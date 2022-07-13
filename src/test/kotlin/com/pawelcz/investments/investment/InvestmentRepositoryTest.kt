@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import java.math.BigDecimal
 import java.sql.Date
 import java.time.LocalDate
@@ -22,11 +23,8 @@ internal class InvestmentRepositoryTest(
     private val underTest: InvestmentRepository
 ) {
 
-    @AfterEach
-    internal fun tearDown() {
-        underTest.deleteAll()
-    }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun allInvestmentsTest(){
         // given
@@ -49,7 +47,7 @@ internal class InvestmentRepositoryTest(
         assertThat(arrayOf(result[0].getId(), result[0].getName())).isEqualTo(firstObject)
         assertThat(arrayOf(result[1].getId(), result[1].getName())).isEqualTo(secondObject)
     }
-
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun availableInvestmentsTest(){
         // given
@@ -68,7 +66,7 @@ internal class InvestmentRepositoryTest(
         assertThat(result[0]).isNotNull
         assertThat(arrayOf(result[0].getId(), result[0].getName())).isEqualTo(firstObject)
     }
-
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun selectEverythingFromInvestmentTest(){
         // given
@@ -84,7 +82,7 @@ internal class InvestmentRepositoryTest(
         assertThat(arrayOf(result.getId(), result.getName(), result.getInterest_Rate(),
             result.getCapitalization_Period(),result.getStart_Date(), result.getEnd_Date())).isEqualTo(testObject)
     }
-
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun selectLessFromInvestmentTest(){
         // given
